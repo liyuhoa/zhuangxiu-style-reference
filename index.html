@@ -428,7 +428,6 @@
     </section>
   </main>
   <footer>个人装修沟通使用 · 图片版权归原作者</footer>
-  <img src="https://liyuhoa-zhuangxiu.goatcounter.com/count?p=%2F" alt="" width="1" height="1" aria-hidden="true" hidden>
   <dialog id="lightbox" aria-label="图片预览">
     <div class="viewer">
       <img id="viewer-image" alt="">
@@ -438,6 +437,17 @@
     </div>
   </dialog>
   <script>
+    const trackingOptOutKey='zhuangxiuTrackingOptOut';
+    const pageUrl=new URL(location.href);
+    if(pageUrl.searchParams.get('no-track')==='1'){
+      localStorage.setItem(trackingOptOutKey,'1');
+      pageUrl.searchParams.delete('no-track');
+      history.replaceState(null,'',pageUrl.pathname+pageUrl.search+pageUrl.hash);
+    }
+    if(localStorage.getItem(trackingOptOutKey)!=='1'){
+      const trackingPixel=new Image(1,1);
+      trackingPixel.src='https://liyuhoa-zhuangxiu.goatcounter.com/count?p=%2F';
+    }
     const buttons=[...document.querySelectorAll('.image-button')],references=[...document.querySelectorAll('.reference')],dialog=document.querySelector('#lightbox'),viewer=document.querySelector('#viewer-image');let current=0;
     const show=i=>{current=(i+buttons.length)%buttons.length;viewer.src=buttons[current].dataset.src;viewer.alt=buttons[current].dataset.alt};
     const remember=reference=>localStorage.setItem('lastReference',reference.dataset.reference);
